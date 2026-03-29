@@ -38,33 +38,35 @@ const ALL_UPGRADES = [
   'upgrade-workschedule'
 ];
 
+app.get('/health', (_req, res) => {
+  res.json({ ok: true });
+});
+
 app.post('/create-checkout-session', async (req, res) => {
   try {
-    const { baseProduct, addons, bundle } = req.body;
-
+    const { baseProduct, addons, bundle } = req.body || {};
     let line_items = [];
 
-    // BUNDLE ONLY
     if (bundle === 'bundle-complete') {
       line_items.push({ price: PRODUCTS['bundle-complete'], quantity: 1 });
     } else {
-
       if (!PRODUCTS[baseProduct]) {
         return res.status(400).json({ error: 'Invalid product' });
       }
 
-      // BASE
       line_items.push({ price: PRODUCTS[baseProduct], quantity: 1 });
 
-      const cleanAddons = (addons || []).filter(a => PRODUCTS[a]);
+      const cleanAddons = Array.isArray(addons)
+        ? addons.filter((addon) => PRODUCTS[addon])
+        : [];
 
-      const hasAll = ALL_UPGRADES.every(a => cleanAddons.includes(a));
+      const hasAll = ALL_UPGRADES.every((addon) => cleanAddons.includes(addon));
 
       if (hasAll) {
         line_items.push({ price: PRODUCTS['bundle-complete'], quantity: 1 });
       } else {
-        cleanAddons.forEach(a => {
-          line_items.push({ price: PRODUCTS[a], quantity: 1 });
+        cleanAddons.forEach((addon) => {
+          line_items.push({ price: PRODUCTS[addon], quantity: 1 });
         });
       }
     }
@@ -72,16 +74,19 @@ app.post('/create-checkout-session', async (req, res) => {
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       line_items,
-      success_url: `${process.env.PUBLIC_SITE_URL}/thank-you`,
-      cancel_url: `${process.env.PUBLIC_SITE_URL}/cart`
+      success_url: `${process.env.PUBLIC_SITE_URL}/thank-you?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.PUBLIC_SITE_URL}/cart`,
+      billing_address_collection: 'auto',
+      allow_promotion_codes: true
     });
 
     res.json({ url: session.url });
-
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: err.message });
+    console.error('Stripe checkout error:', err);
+    res.status(500).json({ error: err.message || 'Unable to create checkout session.' });
   }
 });
 
-app.listen(process.env.PORT || 3000);
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`BroadLocal checkout server running on port ${process.env.PORT || 3000}`);
+});
