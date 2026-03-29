@@ -78,6 +78,18 @@ app.get('/test', (req, res) => {
 });
 
 const port = 3000;
+
+// Test route to verify price IDs
+app.get('/test-price', (req, res) => {
+  res.json({
+    message: 'Price IDs loaded',
+    products: Object.keys(PRODUCTS).map(key => ({
+      id: key,
+      priceId: PRODUCTS[key].priceId
+    }))
+  });
+});
+
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
