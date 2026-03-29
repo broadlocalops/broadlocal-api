@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Documentation Systems | BroadLocal</title>
+
+<style>
+body { font-family: system-ui; background:#fafafa; padding:20px; }
+.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; }
+.card {
+  background:#fff;
+  border-radius:16px;
+  padding:20px;
+  border:1px solid #eee;
+  cursor:pointer;
+}
+.card:hover { border-color:#1e3c2c; }
+.price { font-weight:800; margin-top:10px; }
+</style>
+</head>
+<body>
+
+<h1>Documentation Systems</h1>
+
+<div class="grid">
+
+<div class="card" onclick="selectProduct('termination-documentation-system')">
+  <h3>Termination Documentation System</h3>
+  <p>Separation records, termination workflows.</p>
+  <div class="price">$297</div>
+</div>
+
+<div class="card" onclick="selectProduct('employee-notice-documentation')">
+  <h3>Employee Notice Documentation</h3>
+  <p>Notice tracking and acknowledgments.</p>
+  <div class="price">$297</div>
+</div>
+
+<div class="card" onclick="selectProduct('payroll-documentation-readiness')">
+  <h3>Payroll Documentation Readiness</h3>
+  <p>Audit-ready payroll records.</p>
+  <div class="price">$297</div>
+</div>
+
+<div class="card" onclick="selectProduct('new-hire-documentation-system')">
+  <h3>New Hire Documentation System</h3>
+  <p>Onboarding and I-9 tracking.</p>
+  <div class="price">$297</div>
+</div>
+
+<div class="card" onclick="selectProduct('work-schedule-documentation')">
+  <h3>Work Schedule Documentation</h3>
+  <p>Shift tracking and scheduling records.</p>
+  <div class="price">$197</div>
+</div>
+
+</div>
+
+<script>
+const CART_KEY = "broadlocal_cart_v1";
+
+const PRODUCT_MAP = {
+  "termination-documentation-system": {
+    name: "Termination Documentation System",
+    price: 297,
+    description: "Separation records and termination workflows"
+  },
+  "employee-notice-documentation": {
+    name: "Employee Notice Documentation System",
+    price: 297,
+    description: "Notice tracking and acknowledgments"
+  },
+  "payroll-documentation-readiness": {
+    name: "Payroll Documentation Readiness",
+    price: 297,
+    description: "Audit-ready payroll records"
+  },
+  "new-hire-documentation-system": {
+    name: "New Hire Documentation System",
+    price: 297,
+    description: "Onboarding and I-9 tracking"
+  },
+  "work-schedule-documentation": {
+    name: "Work Schedule Documentation",
+    price: 197,
+    description: "Shift tracking and scheduling records"
+  }
+};
+
+function selectProduct(slug) {
+  const p = PRODUCT_MAP[slug];
+
+  const cart = {
+    baseProduct: {
+      slug,
+      name: p.name,
+      price: p.price,
+      description: p.description
+    },
+    addOns: [],
+    bundleActive: false,
+    updatedAt: Date.now()
+  };
+
+  localStorage.setItem(CART_KEY, JSON.stringify(cart));
+
+  window.location.href = "/cart?product=" + slug;
+}
+</script>
+
+</body>
+</html>
