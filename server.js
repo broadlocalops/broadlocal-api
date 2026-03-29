@@ -38,6 +38,20 @@ const ALL_UPGRADES = [
   'upgrade-workschedule'
 ];
 
+function getSiteUrl() {
+  const raw = (process.env.PUBLIC_SITE_URL || '').trim().replace(/\/+$/, '');
+
+  if (!raw) {
+    throw new Error('Missing PUBLIC_SITE_URL environment variable');
+  }
+
+  if (!/^https?:\/\//i.test(raw)) {
+    throw new Error('PUBLIC_SITE_URL must include http:// or https://');
+  }
+
+  return raw;
+}
+
 app.get('/health', (_req, res) => {
   res.json({ ok: true });
 });
@@ -71,11 +85,13 @@ app.post('/create-checkout-session', async (req, res) => {
       }
     }
 
+    const siteUrl = getSiteUrl();
+
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       line_items,
-      success_url: `${process.env.PUBLIC_SITE_URL}/thank-you?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.PUBLIC_SITE_URL}/cart`,
+      success_url: `${siteUrl}/thank-you?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${siteUrl}/cart`,
       billing_address_collection: 'auto',
       allow_promotion_codes: true
     });
