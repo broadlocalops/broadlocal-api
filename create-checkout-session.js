@@ -1,95 +1,128 @@
-/**
- * create-checkout-session.js
- *
- * Production-ready Express endpoint for BroadLocal checkout.
- *
- * Route:
- *   POST /api/create-checkout-session
- *
- * Requirements:
- *   npm install express stripe dotenv
- *
- * Environment variables required:
- *   STRIPE_SECRET_KEY=sk_live_xxx
- *   APP_BASE_URL=https://broadlocal.com
- *
- * Example Express mount:
- *   const express = require("express");
- *   const app = express();
- *   app.use(express.json());
- *   const createCheckoutSessionHandler = require("./create-checkout-session");
- *   app.post("/api/create-checkout-session", createCheckoutSessionHandler);
- */
-
 const Stripe = require("stripe");
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-/**
- * TRUSTED SERVER-SIDE PRODUCT CATALOG
- * Only products defined here can be purchased.
- * The frontend may send product IDs/slugs, but pricing is rebuilt here.
- */
 const PRODUCT_CATALOG = {
-  "employee-notice-documentation": {
-    id: "employee-notice-documentation",
-    name: "Employee Notice Documentation System",
-    unit_amount: 29700,
-    description:
-      "Notice tracking, acknowledgment forms, distribution logs, and employee communication documentation."
+  "penalty-response-documentation": {
+    id: "penalty-response-documentation",
+    name: "Penalty Response Documentation System",
+    unit_amount: 49700,
+    description: "Response templates, audit checklist, and compliance documentation workflows."
+  },
+  "beneficial-ownership-filing-preparation": {
+    id: "beneficial-ownership-filing-preparation",
+    name: "Beneficial Ownership Filing Preparation",
+    unit_amount: 49700,
+    description: "BOI preparation worksheets, filing organization, and documentation tracking."
   },
   "termination-documentation-system": {
     id: "termination-documentation-system",
     name: "Termination Documentation System",
+    unit_amount: 49700,
+    description: "Separation records, final pay tracking, and termination documentation workflows."
+  },
+  "employee-notice-documentation": {
+    id: "employee-notice-documentation",
+    name: "Employee Notice Documentation System",
     unit_amount: 29700,
-    description:
-      "Separation records, termination communications, acknowledgment templates, and internal documentation workflows."
+    description: "Notice tracking, acknowledgment forms, and distribution logs."
+  },
+  "workplace-incident-documentation": {
+    id: "workplace-incident-documentation",
+    name: "Workplace Incident Documentation System",
+    unit_amount: 39700,
+    description: "Incident reports, witness statements, and incident tracking workflows."
+  },
+  "contractor-documentation-system": {
+    id: "contractor-documentation-system",
+    name: "Contractor Documentation System",
+    unit_amount: 39700,
+    description: "Contractor records, insurance verification, W-9 tracking, and classification documentation."
+  },
+  "new-hire-documentation": {
+    id: "new-hire-documentation",
+    name: "New Hire Documentation System",
+    unit_amount: 29700,
+    description: "I-9 compliance, onboarding records, acknowledgment tracking, and employee file workflows."
+  },
+  "license-renewal-documentation": {
+    id: "license-renewal-documentation",
+    name: "License Renewal Documentation System",
+    unit_amount: 39700,
+    description: "License inventory, renewal checklists, deadline calendars, and submission tracking."
   },
   "payroll-documentation-readiness": {
     id: "payroll-documentation-readiness",
     name: "Payroll Documentation Readiness",
     unit_amount: 29700,
-    description:
-      "Wage records, paystub compliance, payroll communication tracking, and payroll documentation workflows."
+    description: "Wage records, paystub compliance, payroll communication tracking, and payroll documentation workflows."
   },
-  "new-hire-documentation-system": {
-    id: "new-hire-documentation-system",
-    name: "New Hire Documentation System",
-    unit_amount: 29700,
-    description:
-      "I-9 compliance, onboarding records, acknowledgment tracking, and employee file workflows."
+  "ny-filing-preparation": {
+    id: "ny-filing-preparation",
+    name: "NY Filing Preparation System",
+    unit_amount: 34700,
+    description: "Submission tracking, deadline calendars, and filing preparation workflows."
+  },
+  "paystub-documentation-kit": {
+    id: "paystub-documentation-kit",
+    name: "Paystub Documentation Kit",
+    unit_amount: 9700,
+    description: "Paystub review checklist, compliance notes, and correction tracking."
+  },
+  "prenatal-leave-documentation": {
+    id: "prenatal-leave-documentation",
+    name: "Prenatal Leave Documentation System",
+    unit_amount: 19700,
+    description: "Leave request forms, policy templates, tracking logs, and payroll coordination notes."
   },
   "work-schedule-documentation": {
     id: "work-schedule-documentation",
     name: "Work Schedule Documentation",
     unit_amount: 19700,
-    description:
-      "Shift tracking, schedule changes, on-call documentation, and work schedule communication records."
+    description: "Shift tracking, schedule changes, on-call documentation, and work schedule communication records."
+  },
+  "trapped-at-work-documentation": {
+    id: "trapped-at-work-documentation",
+    name: "Trapped at Work Documentation System",
+    unit_amount: 19700,
+    description: "Meal provision logs, overnight shift policies, and compliance tracking."
   }
 };
 
-/**
- * TRUSTED BUNDLE CATALOG
- * Bundle price is server-defined, not client-defined.
- */
+const ADD_ON_CATALOG = {
+  "payroll-documentation-readiness": {
+    id: "payroll-documentation-readiness",
+    name: "Payroll Documentation Readiness",
+    unit_amount: 29700,
+    description: "Wage records, paystub compliance, payroll communication tracking, and payroll documentation workflows."
+  },
+  "new-hire-documentation": {
+    id: "new-hire-documentation",
+    name: "New Hire Documentation System",
+    unit_amount: 29700,
+    description: "I-9 compliance, onboarding records, acknowledgment tracking, and employee file workflows."
+  },
+  "work-schedule-documentation": {
+    id: "work-schedule-documentation",
+    name: "Work Schedule Documentation",
+    unit_amount: 19700,
+    description: "Shift tracking, schedule changes, on-call documentation, and work schedule communication records."
+  }
+};
+
 const BUNDLE_CATALOG = {
   "full-suite-upgrade": {
     id: "full-suite-upgrade",
-    name: "Full Suite Upgrade",
+    name: "Complete Compliance Bundle (Upgrade)",
     unit_amount: 59700,
-    description:
-      "Includes Payroll Documentation Readiness, New Hire Documentation System, and Work Schedule Documentation.",
+    description: "Includes Payroll Documentation Readiness, New Hire Documentation System, and Work Schedule Documentation.",
     includes: [
       "payroll-documentation-readiness",
-      "new-hire-documentation-system",
+      "new-hire-documentation",
       "work-schedule-documentation"
     ]
   }
 };
-
-function badRequest(res, message) {
-  return res.status(400).json({ error: message });
-}
 
 function normalizeCart(body) {
   if (!body || typeof body !== "object") {
@@ -156,10 +189,9 @@ function buildLineItemsFromCart(cart) {
   const dedupedAddOns = [...new Set(cart.addOnSlugs)];
 
   for (const slug of dedupedAddOns) {
-    // Prevent duplicate purchase of base product as add-on
     if (slug === cart.baseProductSlug) continue;
 
-    const product = PRODUCT_CATALOG[slug];
+    const product = ADD_ON_CATALOG[slug];
     if (!product) {
       throw new Error(`Unknown add-on product: ${slug}`);
     }
@@ -210,9 +242,7 @@ module.exports = async function createCheckoutSessionHandler(req, res) {
       mode: "payment",
       line_items,
       success_url: `${process.env.APP_BASE_URL}/thank-you?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.APP_BASE_URL}/cart?product=${encodeURIComponent(
-        cart.baseProductSlug
-      )}`,
+      cancel_url: `${process.env.APP_BASE_URL}/cart?product=${encodeURIComponent(cart.baseProductSlug)}`,
       client_reference_id: buildClientReferenceId(cart),
       billing_address_collection: "auto",
       phone_number_collection: {
