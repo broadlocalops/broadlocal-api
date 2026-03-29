@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
-const Stripe = require('stripe');
 const cors = require('cors');
+const Stripe = require('stripe');
 
 const app = express();
 app.use(cors());
@@ -9,9 +9,7 @@ app.use(express.json());
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-// PRODUCT MAP (ONLY PRICE IDS MATTER HERE)
 const PRODUCTS = {
-  // BASE PRODUCTS
   'penalty-response-documentation': 'price_1TEEINDI2s7djsNjSWp8WfRS',
   'beneficial-ownership-filing-preparation': 'price_1TDuWaDI2s7djsNjoNqh2o4J',
   'termination-documentation-system': 'price_1TEArmDI2s7djsNjgNpxNhrQ',
@@ -27,14 +25,18 @@ const PRODUCTS = {
   'work-schedule-documentation': 'price_1TFMFKDI2s7djsNj3iS4tqrQ',
   'trapped-at-work-documentation': 'price_1TFOJXDI2s7djsNjAZLZILp3',
 
-  // UPGRADES
   'upgrade-payroll': 'price_1TFnlpDI2s7djsNjCflLF1l2',
   'upgrade-newhire': 'price_1TFnocDI2s7djsNjkPIU1fzv',
   'upgrade-workschedule': 'price_1TFnrZDI2s7djsNj98Z3NFea',
 
-  // BUNDLE
   'bundle-complete': 'price_1TFnOrDI2s7djsNjGKv49inp'
 };
+
+const ALL_UPGRADES = [
+  'upgrade-payroll',
+  'upgrade-newhire',
+  'upgrade-workschedule'
+];
 
 app.post('/create-checkout-session', async (req, res) => {
   try {
@@ -44,42 +46,26 @@ app.post('/create-checkout-session', async (req, res) => {
 
     // BUNDLE ONLY
     if (bundle === 'bundle-complete') {
-      line_items.push({
-        price: PRODUCTS['bundle-complete'],
-        quantity: 1
-      });
+      line_items.push({ price: PRODUCTS['bundle-complete'], quantity: 1 });
     } else {
-      // BASE PRODUCT
-      if (baseProduct && PRODUCTS[baseProduct]) {
-        line_items.push({
-          price: PRODUCTS[baseProduct],
-          quantity: 1
-        });
+
+      if (!PRODUCTS[baseProduct]) {
+        return res.status(400).json({ error: 'Invalid product' });
       }
 
-      // ADDONS
-      if (addons && addons.length > 0) {
+      // BASE
+      line_items.push({ price: PRODUCTS[baseProduct], quantity: 1 });
 
-        // IF ALL 3 → USE BUNDLE PRICE
-        const allUpgrades = ['upgrade-payroll', 'upgrade-newhire', 'upgrade-workschedule'];
+      const cleanAddons = (addons || []).filter(a => PRODUCTS[a]);
 
-        const hasAll = allUpgrades.every(a => addons.includes(a));
+      const hasAll = ALL_UPGRADES.every(a => cleanAddons.includes(a));
 
-        if (hasAll) {
-          line_items.push({
-            price: PRODUCTS['bundle-complete'],
-            quantity: 1
-          });
-        } else {
-          addons.forEach(addon => {
-            if (PRODUCTS[addon]) {
-              line_items.push({
-                price: PRODUCTS[addon],
-                quantity: 1
-              });
-            }
-          });
-        }
+      if (hasAll) {
+        line_items.push({ price: PRODUCTS['bundle-complete'], quantity: 1 });
+      } else {
+        cleanAddons.forEach(a => {
+          line_items.push({ price: PRODUCTS[a], quantity: 1 });
+        });
       }
     }
 
@@ -98,4 +84,4 @@ app.post('/create-checkout-session', async (req, res) => {
   }
 });
 
-app.listen(3000, () => console.log('Server running'));
+app.listen(process.env.PORT || 3000);
