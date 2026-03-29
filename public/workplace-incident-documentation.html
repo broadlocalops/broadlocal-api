@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; script-src * 'unsafe-inline' 'unsafe-eval' data: blob:; style-src * 'unsafe-inline'; img-src * data: blob:; connect-src *; font-src *; frame-src *;">
+  <title>Workplace Incident Documentation System | Incident Reports, OSHA Tracking — $397 | BroadLocal</title>
+  <meta name="description" content="Your documentation is your only defense. Incident reporting system with witness statements, investigation logs, OSHA recordkeeping, and corrective action tracking. Instant delivery." />
+  <style>
+    /* Same base styles as previous pages */
+    :root {
+      --bg: #fafafa;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #5f6b7a;
+      --line: #e3e8ef;
+      --soft: #eef2f7;
+      --urgent: #b91c1c;
+      --urgent-light: #fee2e2;
+      --warn-bg: #fff4e6;
+      --warn-border: #d97706;
+      --warn-text: #78350f;
+      --ok-bg: #e6f4ea;
+      --ok-text: #1e3c2c;
+      --shadow: 0 12px 32px rgba(0,0,0,.06);
+      --radius: 20px;
+      --max: 1200px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Inter, system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 30px 20px 70px;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 24px;
+      color: #1e3c2c;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .back-link:hover { text-decoration: underline; }
+
+    .hero {
+      background: linear-gradient(135deg, #1e3c2c 0%, #2a4a35 100%);
+      color: white;
+      border-radius: var(--radius);
+      padding: 40px 34px;
+      margin-bottom: 24px;
+    }
+
+    .urgency-badge {
+      display: inline-block;
+      background: var(--urgent);
+      color: white;
+      padding: 6px 14px;
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: clamp(32px, 5vw, 44px);
+      line-height: 1.2;
+      margin-bottom: 16px;
+      font-weight: 800;
+    }
+
+    .hero p {
+      font-size: 17px;
+      opacity: 0.92;
+      max-width: 700px;
+    }
+
+    .trust-strip {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      background: white;
+      padding: 16px 20px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      border: 1px solid var(--line);
+    }
+
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #2c3e50;
+    }
+    .trust-item span:first-child { font-size: 18px; }
+
+    .alert-card {
+      background: var(--warn-bg);
+      border-left: 6px solid var(--warn-border);
+      border-radius: 16px;
+      padding: 20px 24px;
+      margin-bottom: 24px;
+    }
+    .alert-card h3 {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--warn-text);
+      margin-bottom: 8px;
+    }
+    .alert-card p { font-size: 15px; color: var(--warn-text); }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 28px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .panel h2 {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .micro {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #4b5563;
+      margin-bottom: 12px;
+    }
+
+    .deliverable-list {
+      list-style: none;
+      padding: 0;
+      margin: 16px 0 0;
+    }
+    .deliverable-list li {
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .deliverable-list li:last-child { border-bottom: none; }
+    .deliverable-icon { font-size: 22px; min-width: 36px; }
+    .deliverable-text strong { display: block; margin-bottom: 4px; color: #1e3c2c; font-size: 16px; }
+    .deliverable-text span { font-size: 14px; color: var(--muted); }
+
+    .price-card {
+      background: #f8f9fa;
+      border-radius: 20px;
+      padding: 28px;
+      text-align: center;
+      margin: 24px 0;
+    }
+    .price {
+      font-size: 48px;
+      font-weight: 800;
+      color: #1e3c2c;
+    }
+    .delivery-badge {
+      display: inline-block;
+      background: var(--ok-bg);
+      color: var(--ok-text);
+      padding: 8px 16px;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 700;
+      margin: 12px 0;
+    }
+    .btn {
+      background: #1e3c2c;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 14px 20px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.2s;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+    }
+    .btn:hover { background: #2a4a35; }
+
+    .safe-box {
+      background: #f0f7ff;
+      border-left: 4px solid #1e3c2c;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 24px 0;
+      font-size: 13px;
+      color: #2c3e50;
+    }
+    .safe-box h4 {
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      color: #1e3c2c;
+    }
+    .safe-box ul { margin-left: 20px; }
+    .safe-box li { margin: 6px 0; }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+    .card {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 20px;
+      transition: all 0.2s;
+    }
+    .card h3 { font-size: 18px; font-weight: 800; margin-bottom: 8px; }
+    .card-price { font-size: 24px; font-weight: 800; color: #1e3c2c; margin: 12px 0; }
+    .card p { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
+    .btn-secondary {
+      background: #f1f5f9;
+      border: 1px solid var(--line);
+      border-radius: 40px;
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      text-align: center;
+      display: inline-block;
+      text-decoration: none;
+      color: var(--text);
+    }
+    .btn-secondary:hover { background: #e2e8f0; }
+
+    .footer {
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .footer a { color: #1e3c2c; text-decoration: none; }
+
+    @media (max-width: 768px) {
+      .cards { grid-template-columns: 1fr; }
+      .hero { padding: 28px 20px; }
+      .panel { padding: 20px; }
+      h1 { font-size: 28px; }
+      .price { font-size: 40px; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <a href="/documentation-systems" class="back-link">← Back to all systems</a>
+
+  <div class="hero">
+    <div class="urgency-badge">⚠️ INCIDENT REPORTS = LEGAL DEFENSE</div>
+    <h1>Workplace Incident Documentation System</h1>
+    <p>When an incident happens, your documentation is your only defense. Poor incident reports = lost lawsuits. This system gives you complete incident tracking, witness statements, and corrective action logs.</p>
+  </div>
+
+  <div class="trust-strip">
+    <div class="trust-item"><span>🏢</span><span>Est. 2016 — 10-Year NY LLC</span></div>
+    <div class="trust-item"><span>💳</span><span>Stripe Secure Payments</span></div>
+    <div class="trust-item"><span>📦</span><span>Instant Delivery</span></div>
+    <div class="trust-item"><span>⚖️</span><span>Admin Tools — Not Legal Advice</span></div>
+    <div class="trust-item"><span>📋</span><span>All Sales Final</span></div>
+  </div>
+
+  <div class="alert-card">
+    <h3>📋 Why Incident Documentation Matters</h3>
+    <p><strong>What happens when an incident occurs:</strong> Employee injury claim — OSHA requires records. Workplace dispute — your report is evidence. Property damage — insurance requires documentation. Harassment complaint — investigation records are critical.</p>
+    <p><strong>Poor documentation costs:</strong> Lost lawsuits, increased insurance premiums, OSHA fines, reputation damage.</p>
+  </div>
+
+  <div class="panel">
+    <div class="micro">What You Get</div>
+    <h2>Complete Incident Documentation System</h2>
+    <ul class="deliverable-list">
+      <li><div class="deliverable-icon">📋</div><div class="deliverable-text"><strong>Incident Report Form</strong><span>Date/time, location, persons involved, witnesses, description, injuries, immediate actions, supervisor notified.</span></div></li>
+      <li><div class="deliverable-icon">👥</div><div class="deliverable-text"><strong>Witness Statement Template</strong><span>Witness name, date/time, observations, diagram (optional), signature.</span></div></li>
+      <li><div class="deliverable-icon">🔍</div><div class="deliverable-text"><strong>Incident Investigation Log</strong><span>Incident reference number, investigation date, investigator, root cause, contributing factors, corrective actions.</span></div></li>
+      <li><div class="deliverable-icon">📊</div><div class="deliverable-text"><strong>OSHA Recordkeeping Tracker</strong><span>OSHA recordable? days away, job transfer/restriction, 300 Log entry.</span></div></li>
+      <li><div class="deliverable-icon">✅</div><div class="deliverable-text"><strong>Follow-Up Action Tracker</strong><span>Corrective action required, responsible party, due date, completion date, verification.</span></div></li>
+    </ul>
+  </div>
+
+  <div class="price-card">
+    <div class="price">$397</div>
+    <div class="delivery-badge">📦 Instant digital delivery</div>
+    <a href="/cart?product=workplace-incident-documentation" class="btn">Get the Incident System →</a>
+    <div class="safe-box" style="margin-top: 16px; background: #f8f9fa;">
+      <p style="font-size: 12px;">Secure payment via Stripe • BroadLocal, LLC<br>All sales final — <a href="/legal/refund-policy" style="color: #1e3c2c;">Refund Policy</a></p>
+    </div>
+  </div>
+
+  <div class="safe-box">
+    <h4>🔨 What This Administrative Tool Does NOT Do</h4>
+    <ul>
+      <li><strong>Does not provide legal advice</strong> — This tool does not interpret incident laws</li>
+      <li><strong>Does not guarantee legal outcomes</strong> — Incident claims are determined by courts/agencies</li>
+      <li><strong>Does not replace qualified counsel</strong> — For legal guidance, consult an attorney</li>
+    </ul>
+  </div>
+
+  <div class="panel">
+    <div class="micro">Related Documentation Systems</div>
+    <h2>Businesses Managing Incidents Also Need:</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>Termination Documentation</h3>
+        <div class="card-price">$497</div>
+        <p>Separation tracking, final pay, COBRA compliance.</p>
+        <a href="/termination-documentation-system" class="btn-secondary">View System →</a>
+      </div>
+      <div class="card">
+        <h3>Employee Notice Documentation</h3>
+        <div class="card-price">$297</div>
+        <p>Notice tracking, acknowledgment forms, distribution logs.</p>
+        <a href="/employee-notice-documentation" class="btn-secondary">View System →</a>
+      </div>
+      <div class="card">
+        <h3>New Hire Documentation</h3>
+        <div class="card-price">$297</div>
+        <p>I-9 tracking, onboarding records, acknowledgment forms.</p>
+        <a href="/new-hire-documentation" class="btn-secondary">View System →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>© 2026 BroadLocal, LLC — Bronx, New York</p>
+    <p>BroadLocal is a brand of BroadLocal, LLC | Administrative documentation systems for businesses organizing internal records.</p>
+    <p style="margin-top: 12px;"><a href="/legal/terms-of-service">Terms</a> | <a href="/legal/privacy-policy">Privacy</a> | <a href="/legal/refund-policy">Refunds</a> | <a href="/legal/disclaimer">Disclaimers</a></p>
+  </div>
+
+</div>
+</body>
+</html>
