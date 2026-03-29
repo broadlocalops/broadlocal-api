@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Employee Notice Documentation System | BroadLocal</title>
+  <meta name="description" content="Structured documentation workflow tools for internal operational use." />
+  <style>
+    :root {
+      --bg: #fafafa;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #5f6b7a;
+      --line: #e3e8ef;
+      --soft: #eef2f7;
+      --urgent: #b91c1c;
+      --urgent-light: #fee2e2;
+      --warn-bg: #fff4e6;
+      --warn-border: #d97706;
+      --warn-text: #78350f;
+      --ok-bg: #e6f4ea;
+      --ok-text: #1e3c2c;
+      --shadow: 0 12px 32px rgba(0,0,0,.06);
+      --radius: 20px;
+      --max: 1200px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 30px 20px 70px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #1e3c2c 0%, #2a4a35 100%);
+      color: white;
+      border-radius: var(--radius);
+      padding: 40px 34px;
+      margin-bottom: 24px;
+    }
+
+    .urgency-badge {
+      display: inline-block;
+      background: var(--urgent);
+      color: white;
+      padding: 6px 14px;
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: clamp(32px, 5vw, 44px);
+      line-height: 1.2;
+      margin-bottom: 16px;
+      font-weight: 800;
+    }
+
+    .hero p {
+      font-size: 17px;
+      opacity: 0.92;
+      max-width: 760px;
+    }
+
+    .trust-strip {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      background: white;
+      padding: 16px 20px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      border: 1px solid var(--line);
+    }
+
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #2c3e50;
+    }
+
+    .alert-card {
+      background: var(--warn-bg);
+      border-left: 6px solid var(--warn-border);
+      border-radius: 16px;
+      padding: 20px 24px;
+      margin-bottom: 24px;
+    }
+
+    .alert-card h3 {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--warn-text);
+      margin-bottom: 8px;
+    }
+
+    .alert-card p {
+      font-size: 15px;
+      color: var(--warn-text);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 380px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .stack {
+      display: grid;
+      gap: 24px;
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .panel h2 {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .panel p {
+      font-size: 15px;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .micro {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #4b5563;
+      margin-bottom: 12px;
+    }
+
+    .check-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .check-item {
+      background: #fafbfc;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 14px;
+      color: #374151;
+    }
+
+    .risk-box {
+      margin-top: 16px;
+      background: var(--urgent-light);
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 14px;
+      color: var(--urgent);
+      font-weight: 500;
+    }
+
+    .bullet-list {
+      margin-top: 14px;
+      padding-left: 18px;
+      color: var(--muted);
+    }
+
+    .bullet-list li { margin-bottom: 8px; }
+
+    .price-box {
+      position: sticky;
+      top: 20px;
+    }
+
+    .price-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .price-label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #4b5563;
+      margin-bottom: 10px;
+    }
+
+    .price-title {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .price-number {
+      font-size: 42px;
+      font-weight: 900;
+      color: #1e3c2c;
+      margin-bottom: 16px;
+    }
+
+    .cta-stack {
+      display: grid;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .btn {
+      background: #1e3c2c;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 14px 20px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.2s;
+    }
+
+    .btn:hover { background: #2a4a35; }
+
+    .btn-outline {
+      background: white;
+      color: #1e3c2c;
+      border: 1px solid #1e3c2c;
+      border-radius: 50px;
+      padding: 14px 20px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .scope {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 16px;
+      text-align: center;
+    }
+
+    .expansion-panel {
+      margin-top: 24px;
+      background: #f8faf8;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    .expansion-panel h3 {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .expansion-panel p {
+      font-size: 15px;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .expansion-list {
+      padding-left: 18px;
+      color: #374151;
+    }
+
+    .expansion-list li {
+      margin-bottom: 8px;
+    }
+
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+      .check-grid { grid-template-columns: 1fr; }
+      .price-box { position: static; }
+    }
+
+    @media (max-width: 640px) {
+      .hero { padding: 28px 20px; }
+      .panel, .price-card, .expansion-panel { padding: 20px; }
+      h1 { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="urgency-badge">⚠️ Documentation system ready for access</div>
+    <h1 id="productTitle">Employee Notice Documentation System</h1>
+    <p id="productHeroText">
+      Structured documentation workflow tools for notice tracking, acknowledgment forms, distribution logs, and employee communication documentation.
+    </p>
+  </div>
+
+  <div class="trust-strip">
+    <div class="trust-item"><span>🏢</span><span>Est. 2016 — 10-Year NY LLC</span></div>
+    <div class="trust-item"><span>💳</span><span>Stripe Secure</span></div>
+    <div class="trust-item"><span>📦</span><span>Instant Delivery</span></div>
+    <div class="trust-item"><span>⚖️</span><span>Admin Tools — Not Legal Advice</span></div>
+  </div>
+
+  <div class="alert-card">
+    <h3>📋 Administrative pressure often exposes documentation gaps</h3>
+    <p id="productAlertText">
+      Businesses often begin organizing this documentation area when internal coordination, notice tracking, or administrative visibility becomes more immediate.
+    </p>
+  </div>
+
+  <div class="layout">
+    <main class="stack">
+
+      <div class="panel">
+        <div class="micro">Situational Pressure Entry</div>
+        <h2 id="pressureHeading">Businesses Often Review Employee Notice Documentation During Administrative Updates</h2>
+        <p id="pressureCopy">
+          Organizations commonly begin organizing employee notice records when posting requirements change, communication workflows become inconsistent, or internal documentation coordination requires clearer structure.
+        </p>
+      </div>
+
+      <div class="panel">
+        <div class="micro">Recognition Checklist</div>
+        <h2>Common Documentation Gaps</h2>
+
+        <div class="check-grid" id="checklistGrid">
+          <div class="check-item">Posting actions not consistently documented</div>
+          <div class="check-item">Employee acknowledgment tracking incomplete</div>
+          <div class="check-item">Notice distribution handled differently across teams</div>
+          <div class="check-item">Historical notice records not centrally archived</div>
+          <div class="check-item">Updated notices communicated without workflow tracking</div>
+          <div class="check-item">Administrative preparation delayed by scattered records</div>
+        </div>
+
+        <div class="risk-box" id="riskCopy">
+          Unstructured notice documentation can require repeated internal adjustments and increase coordination time when information must be reviewed quickly.
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="micro">Structured Workflow Solution</div>
+        <h2 id="solutionHeading">How This Documentation System Helps</h2>
+        <p id="solutionCopy">
+          This system is designed to standardize how workplace notices are prepared, communicated, tracked, and retained within existing administrative processes.
+        </p>
+
+        <ul class="bullet-list" id="includesList">
+          <li>Notice preparation checklist</li>
+          <li>Employee acknowledgment tracking worksheet</li>
+          <li>Posting location documentation template</li>
+          <li>Notice update coordination guide</li>
+        </ul>
+      </div>
+
+    </main>
+
+    <aside class="price-box">
+      <div class="price-card">
+        <div class="price-label">Selected Documentation System</div>
+        <div class="price-title" id="priceProductName">Employee Notice Documentation System</div>
+        <div class="price-number" id="priceProductValue">$297</div>
+
+        <div class="cta-stack">
+          <button
+            class="btn"
+            id="primaryAddToCart"
+            data-add-base-product
+          >
+            Access Documentation System
+          </button>
+
+          <button class="btn-outline" onclick="window.location.href='/documentation-systems'">
+            Review Other Systems
+          </button>
+        </div>
+
+        <div class="scope">
+          BroadLocal provides structured administrative documentation workflow tools for internal operational use.
+        </div>
+      </div>
+
+      <div class="expansion-panel">
+        <h3>Businesses Reviewing This Area Frequently Also Organize</h3>
+        <p>
+          Addressing multiple documentation areas together can improve internal clarity and reduce future administrative disruption.
+        </p>
+
+        <ul class="expansion-list">
+          <li>Payroll documentation readiness</li>
+          <li>New-hire documentation workflows</li>
+          <li>Work schedule documentation systems</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script>
+(function () {
+  const CART_KEY = "broadlocal_cart_v1";
+
+  // =============================
+  // CHANGE ONLY THIS PRODUCT BLOCK
+  // FOR EACH PRODUCT PAGE CLONE
+  // =============================
+  const CURRENT_PRODUCT = {
+    slug: "employee-notice-documentation",
+    name: "Employee Notice Documentation System",
+    price: 297,
+    description: "Notice tracking, acknowledgment forms, distribution logs, and employee communication documentation."
+  };
+
+  function saveCart(cart) {
+    localStorage.setItem(CART_KEY, JSON.stringify(cart));
+  }
+
+  function createCartFromProduct(product) {
+    return {
+      baseProduct: product,
+      addOns: [],
+      bundleActive: false,
+      updatedAt: Date.now()
+    };
+  }
+
+  function hydratePage() {
+    document.title = CURRENT_PRODUCT.name + " | BroadLocal";
+    document.getElementById("productTitle").textContent = CURRENT_PRODUCT.name;
+    document.getElementById("productHeroText").textContent = CURRENT_PRODUCT.description;
+    document.getElementById("priceProductName").textContent = CURRENT_PRODUCT.name;
+    document.getElementById("priceProductValue").textContent = "$" + CURRENT_PRODUCT.price;
+  }
+
+  function initAddToCart() {
+    const btn = document.getElementById("primaryAddToCart");
+    if (!btn) return;
+
+    btn.addEventListener("click", function () {
+      const cart = createCartFromProduct(CURRENT_PRODUCT);
+      saveCart(cart);
+      window.location.href = "/cart?product=" + encodeURIComponent(CURRENT_PRODUCT.slug);
+    });
+  }
+
+  hydratePage();
+  initAddToCart();
+})();
+</script>
+</body>
+</html>
