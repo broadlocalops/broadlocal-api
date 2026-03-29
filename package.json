@@ -1,14 +1,19 @@
 {
-  "name": "broadlocal-checkout",
+  "name": "broadlocal-live-launch",
   "version": "1.0.0",
+  "description": "BroadLocal production web app with Stripe Checkout Session backend",
   "main": "server.js",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=20 <23"
+  },
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "node server.js"
   },
   "dependencies": {
-    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
-    "express": "^4.18.2",
-    "stripe": "^14.0.0"
+    "express": "^4.21.0",
+    "stripe": "^17.0.0"
   }
 }
