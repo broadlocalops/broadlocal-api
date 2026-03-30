@@ -2,520 +2,211 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <meta name="format-detection" content="telephone=no">
-  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Complete Your Order | BroadLocal</title>
+
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: Arial, sans-serif;
       background: #fafafa;
-      color: #111;
-      line-height: 1.5;
+      margin: 0;
+      padding: 0;
     }
-    .cart-wrap {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 24px 20px 32px;
+
+    .wrap {
+      max-width: 900px;
+      margin: 40px auto;
+      background: white;
+      padding: 24px;
+      border-radius: 12px;
+      border: 1px solid #ddd;
     }
-    .back-link {
-      display: inline-block;
+
+    h1 {
       margin-bottom: 16px;
-      color: #1e3c2c;
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 500;
     }
-    .hero {
-      background: linear-gradient(135deg, #1e3c2c, #2a4a35);
-      color: white;
-      border-radius: 20px;
-      padding: 28px 28px;
-      margin-bottom: 20px;
-    }
-    .badge {
-      display: inline-block;
-      background: #b91c1c;
-      padding: 6px 14px;
-      border-radius: 50px;
-      font-size: 13px;
-      font-weight: 700;
-      margin-bottom: 14px;
-    }
-    h1 { font-size: 28px; margin-bottom: 10px; font-weight: 800; }
-    .hero p { font-size: 15px; opacity: 0.92; }
-    .trust-strip {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-      background: white;
-      padding: 12px 20px;
-      border-radius: 12px;
-      margin-bottom: 20px;
-      border: 1px solid #e3e8ef;
-    }
-    .trust-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      font-weight: 500;
-      color: #2c3e50;
-    }
-    .alert {
-      background: #fff4e6;
-      border-left: 4px solid #d97706;
-      padding: 14px 20px;
-      border-radius: 12px;
-      margin-bottom: 20px;
-      font-size: 14px;
-    }
-    .panel {
-      background: white;
-      border: 1px solid #e3e8ef;
-      border-radius: 18px;
-      padding: 20px;
-      margin-bottom: 20px;
-    }
-    .cart-item {
+
+    .item {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
-      padding: 12px 0;
-      border-bottom: 1px solid #eee;
+      margin-bottom: 10px;
     }
-    .cart-name { font-weight: 800; font-size: 18px; }
-    .cart-price { font-size: 22px; font-weight: 800; color: #1e3c2c; }
-    .cart-desc { font-size: 13px; color: #6c757d; margin-top: 4px; }
-    .section-title-sm {
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 12px;
-    }
-    .section-title-upgrade { color: #b91c1c; }
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin: 16px 0;
-    }
-    .card {
-      border: 1px solid #e3e8ef;
-      border-radius: 16px;
-      padding: 16px;
-      background: white;
-      transition: all 0.2s;
-      cursor: pointer;
-    }
-    .card.selected { border: 2px solid #1e3c2c; background: #f8faf8; }
-    .card-tag {
-      background: #fee2e2;
-      display: inline-block;
-      padding: 4px 10px;
-      border-radius: 50px;
-      font-size: 10px;
-      font-weight: 700;
-      color: #b91c1c;
-      margin-bottom: 12px;
-    }
-    .card h3 { font-size: 16px; font-weight: 800; margin-bottom: 6px; }
-    .card-price { font-size: 22px; font-weight: 800; color: #1e3c2c; margin: 8px 0; }
-    .card p { font-size: 11px; color: #6c757d; margin-bottom: 12px; }
-    .btn, button {
+
+    .btn {
       background: #1e3c2c;
       color: white;
+      padding: 12px;
       border: none;
-      border-radius: 40px;
-      padding: 10px 16px;
-      font-weight: 700;
       cursor: pointer;
+      margin-top: 10px;
       width: 100%;
-      font-size: 13px;
-      text-decoration: none;
-      display: inline-block;
-      text-align: center;
     }
+
     .btn-outline {
       background: white;
-      color: #1e3c2c;
       border: 1px solid #1e3c2c;
+      color: #1e3c2c;
     }
-    .bundle {
-      background: #f8faf8;
-      border-radius: 16px;
-      padding: 18px;
-      margin-top: 16px;
-      text-align: center;
-      border: 1px solid #e3e8ef;
+
+    .upgrade {
+      border: 1px solid #ddd;
+      padding: 12px;
+      margin: 8px 0;
+      cursor: pointer;
     }
-    .bundle h3 { font-size: 18px; font-weight: 800; margin-bottom: 6px; }
-    .bundle-price { font-size: 28px; font-weight: 800; color: #1e3c2c; }
-    .sidebar {
-      background: white;
-      border: 1px solid #e3e8ef;
-      border-radius: 18px;
-      padding: 20px;
-      position: sticky;
-      top: 20px;
+
+    .upgrade.selected {
+      border: 2px solid #1e3c2c;
+      background: #f0f6f2;
     }
-    .summary-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 8px 0;
-      font-size: 14px;
-    }
-    .summary-row span:first-child { flex: 1; }
+
     .total {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      font-size: 18px;
-      font-weight: 800;
-      margin-top: 12px;
-      padding-top: 12px;
-      border-top: 1px solid #eee;
-    }
-    .total-amount { font-size: 28px; font-weight: 800; color: #1e3c2c; }
-    .footer {
-      margin-top: 40px;
-      text-align: center;
-      font-size: 11px;
-      color: #6c757d;
-    }
-    .footer a { color: #1e3c2c; text-decoration: none; margin: 0 6px; }
-    @media (max-width: 800px) {
-      .grid-3 { grid-template-columns: 1fr; }
-      .hero { padding: 22px 20px; }
-      h1 { font-size: 24px; }
+      font-size: 20px;
+      margin-top: 20px;
+      font-weight: bold;
     }
   </style>
 </head>
+
 <body>
-<div class="cart-wrap">
 
-  <a href="/documentation-systems" class="back-link">← Back to all systems</a>
+<div class="wrap">
 
-  <div class="hero">
-    <div class="badge">⚠️ ACTIVE ENFORCEMENT: 30 DAYS TO RESPOND</div>
-    <h1>Complete Your Documentation Stack</h1>
-    <p>Review your selected system and add recommended upgrades to build a complete compliance package.</p>
+  <h1>Complete Your Order</h1>
+
+  <div id="product"></div>
+
+  <h3>Add Recommended Systems</h3>
+
+  <div class="upgrade" data-id="payroll-documentation-readiness">
+    Payroll Documentation Readiness — $297
   </div>
 
-  <div class="trust-strip">
-    <div class="trust-item">🏢 Est. 2016 — 10-Year NY LLC</div>
-    <div class="trust-item">💳 Stripe Secure</div>
-    <div class="trust-item">📦 Instant Delivery</div>
-    <div class="trust-item">⚖️ Admin Tools — Not Legal Advice</div>
+  <div class="upgrade" data-id="new-hire-documentation">
+    New Hire Documentation System — $297
   </div>
 
-  <div class="alert">
-    <strong>📋 187 NYC gyms received DCWP warning letters.</strong> Regulators demand proof of notice delivery, policy communication, and employee acknowledgments.
+  <div class="upgrade" data-id="work-schedule-documentation">
+    Work Schedule Documentation — $197
   </div>
 
-  <div style="display: flex; flex-wrap: wrap; gap: 24px;">
-    <div style="flex: 2; min-width: 280px;">
-      <div class="panel">
-        <div class="section-title-sm">CURRENT ORDER</div>
-        <div class="cart-item">
-          <div>
-            <div class="cart-name" id="cartProductName">Loading...</div>
-            <div class="cart-desc" id="cartProductDesc"></div>
-          </div>
-          <div class="cart-price" id="cartProductPrice">$---</div>
-        </div>
-      </div>
+  <button id="bundleBtn" class="btn">
+    Upgrade to Full Suite ($597)
+  </button>
 
-      <div class="panel">
-        <div class="section-title-sm section-title-upgrade">⚡ RECOMMENDED UPGRADES</div>
-        <h2 style="font-size: 18px; margin-bottom: 8px;">Complete Your Documentation Stack:</h2>
+  <div class="total" id="total"></div>
 
-        <div class="grid-3">
-          <div class="card" data-upgrade="payroll-documentation-readiness">
-            <div class="card-tag">⭐ RECOMMENDED</div>
-            <h3>Payroll Documentation Readiness</h3>
-            <div class="card-price">$297</div>
-            <p>Wage records, paystub compliance, payroll communication tracking</p>
-            <button class="btn upgrade-btn" type="button">Add Upgrade →</button>
-          </div>
-          <div class="card" data-upgrade="new-hire-documentation">
-            <div class="card-tag">⭐ RECOMMENDED</div>
-            <h3>New Hire Documentation System</h3>
-            <div class="card-price">$297</div>
-            <p>I-9 compliance, onboarding records, acknowledgment tracking</p>
-            <button class="btn upgrade-btn" type="button">Add Upgrade →</button>
-          </div>
-          <div class="card" data-upgrade="work-schedule-documentation">
-            <div class="card-tag">⭐ RECOMMENDED</div>
-            <h3>Work Schedule Documentation</h3>
-            <div class="card-price">$197</div>
-            <p>Shift tracking, schedule changes, on-call documentation</p>
-            <button class="btn upgrade-btn" type="button">Add Upgrade →</button>
-          </div>
-        </div>
+  <button id="checkoutBtn" class="btn">
+    Secure My Package →
+  </button>
 
-        <div class="bundle">
-          <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; align-items: center;">
-            <div><h3>🔥 Full Suite Upgrade</h3><p>All 3 recommended systems</p></div>
-            <div><div style="font-size: 12px; text-decoration: line-through;">$791 value</div><div class="bundle-price">$597</div></div>
-          </div>
-          <div style="display: flex; gap: 8px; justify-content: center; margin: 12px 0; flex-wrap: wrap;">
-            <span style="background: white; padding: 4px 10px; border-radius: 20px; font-size: 11px;">Payroll</span>
-            <span style="background: white; padding: 4px 10px; border-radius: 20px; font-size: 11px;">New Hire</span>
-            <span style="background: white; padding: 4px 10px; border-radius: 20px; font-size: 11px;">Work Schedule</span>
-          </div>
-          <button id="bundleBtn" class="btn" type="button">Upgrade to Full Suite →</button>
-          <div style="font-size: 11px; margin-top: 8px;">Save $194 compared to individual upgrades</div>
-        </div>
-      </div>
-    </div>
+  <button id="continueBtn" class="btn btn-outline">
+    Continue With Current Order
+  </button>
 
-    <div style="flex: 1; min-width: 260px;">
-      <div class="sidebar">
-        <h3 style="font-size: 18px; margin-bottom: 12px;">Order Summary</h3>
-        <div id="summaryList"></div>
-        <div style="border-top: 1px solid #eee; margin: 10px 0;"></div>
-        <div class="summary-row"><span>Upgrades selected</span><span id="selectedCount">0</span></div>
-        <div class="total"><span>Total</span><span class="total-amount" id="totalPrice">$---</span></div>
-        <div style="margin-top: 16px;">
-          <button id="checkoutBtn" class="btn" type="button">Secure My Package →</button>
-          <button id="continueBtn" class="btn btn-outline" style="margin-top: 10px;" type="button">Continue With Current Order</button>
-        </div>
-        <div style="font-size: 10px; color: #6c757d; margin-top: 16px; text-align: center;">
-          📋 All Sales Final — <a href="/legal/refund-policy">Refund Policy</a><br>
-          Instant Digital Delivery
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="footer">
-    <p>© 2026 BroadLocal, LLC — Bronx, New York</p>
-    <div>
-      <a href="/legal/refund-policy">Refund Policy</a> |
-      <a href="/legal/terms-of-service">Terms</a> |
-      <a href="/legal/privacy-policy">Privacy</a> |
-      <a href="/legal/disclaimer">Disclaimer</a>
-    </div>
-  </div>
 </div>
 
 <script>
+
 const API_URL = "https://broadlocal-api.onrender.com/api/create-checkout-session";
 
 const PRODUCTS = {
-  "penalty-response-documentation": {
-    name: "Penalty Response Documentation System",
-    price: 497
-  },
-  "beneficial-ownership-filing-preparation": {
-    name: "Beneficial Ownership Filing Preparation",
-    price: 497
-  },
-  "termination-documentation-system": {
-    name: "Termination Documentation System",
-    price: 497
-  },
-  "employee-notice-documentation": {
-    name: "Employee Notice Documentation System",
-    price: 297
-  },
-  "workplace-incident-documentation": {
-    name: "Workplace Incident Documentation System",
-    price: 397
-  },
-  "contractor-documentation-system": {
-    name: "Contractor Documentation System",
-    price: 397
-  },
-  "new-hire-documentation": {
-    name: "New Hire Documentation System",
-    price: 297
-  },
-  "license-renewal-documentation": {
-    name: "License Renewal Documentation System",
-    price: 397
-  },
-  "payroll-documentation-readiness": {
-    name: "Payroll Documentation Readiness",
-    price: 297
-  },
-  "ny-filing-preparation": {
-    name: "NY Filing Preparation System",
-    price: 347
-  },
-  "paystub-documentation-kit": {
-    name: "Paystub Documentation Kit",
-    price: 97
-  },
-  "prenatal-leave-documentation": {
-    name: "Prenatal Leave Documentation System",
-    price: 197
-  },
-  "work-schedule-documentation": {
-    name: "Work Schedule Documentation",
-    price: 197
-  },
-  "trapped-at-work-documentation": {
-    name: "Trapped at Work Documentation System",
-    price: 197
-  }
+  "employee-notice-documentation": 297,
+  "termination-documentation-system": 497,
+  "payroll-documentation-readiness": 297,
+  "new-hire-documentation": 297,
+  "work-schedule-documentation": 197
 };
 
-const UPGRADE_PRODUCTS = {
-  "payroll-documentation-readiness": {
-    name: "Payroll Documentation Readiness",
-    price: 297
-  },
-  "new-hire-documentation": {
-    name: "New Hire Documentation System",
-    price: 297
-  },
-  "work-schedule-documentation": {
-    name: "Work Schedule Documentation",
-    price: 197
-  }
-};
-
-const ALL_UPGRADES = [
+const UPGRADES = [
   "payroll-documentation-readiness",
   "new-hire-documentation",
   "work-schedule-documentation"
 ];
 
-const DEFAULT_PRODUCT = "employee-notice-documentation";
 const urlParams = new URLSearchParams(window.location.search);
 const productParam = urlParams.get("product");
 
-let baseProductId = DEFAULT_PRODUCT;
+let baseProduct = productParam || "employee-notice-documentation";
+let selected = [];
 
-if (productParam && PRODUCTS[productParam]) {
-  baseProductId = productParam;
-  sessionStorage.setItem("cart_product", productParam);
+// 🔥 CRITICAL FIX: reset state on new entry
+if (productParam) {
   localStorage.removeItem("cart_upgrades");
 } else {
-  const stored = sessionStorage.getItem("cart_product");
-  if (stored && PRODUCTS[stored]) {
-    baseProductId = stored;
+  try {
+    selected = JSON.parse(localStorage.getItem("cart_upgrades")) || [];
+  } catch {
+    selected = [];
   }
 }
 
-let selectedUpgrades = [];
+function calcTotal() {
+  let total = PRODUCTS[baseProduct] || 0;
 
-function formatPrice(price) {
-  return `$${price}`;
-}
-
-function getBaseProduct() {
-  return PRODUCTS[baseProductId] || PRODUCTS[DEFAULT_PRODUCT];
-}
-
-function hasAllThreeUpgrades() {
-  return ALL_UPGRADES.every(id => selectedUpgrades.includes(id));
-}
-
-function calculateTotal() {
-  const baseProduct = getBaseProduct();
-  let total = baseProduct.price;
-
-  if (hasAllThreeUpgrades()) {
+  if (UPGRADES.every(u => selected.includes(u))) {
     return total + 597;
   }
 
-  selectedUpgrades.forEach(id => {
-    if (UPGRADE_PRODUCTS[id]) total += UPGRADE_PRODUCTS[id].price;
-  });
-
+  selected.forEach(u => total += PRODUCTS[u] || 0);
   return total;
 }
 
-function getDisplaySummaryItems() {
-  const baseProduct = getBaseProduct();
-  const items = [{ label: baseProduct.name, price: baseProduct.price }];
-
-  if (hasAllThreeUpgrades()) {
-    items.push({
-      label: "Complete Compliance Bundle (Upgrade)",
-      price: 597
-    });
-    return items;
-  }
-
-  selectedUpgrades.forEach(id => {
-    if (UPGRADE_PRODUCTS[id]) {
-      items.push({
-        label: UPGRADE_PRODUCTS[id].name,
-        price: UPGRADE_PRODUCTS[id].price
-      });
-    }
-  });
-
-  return items;
-}
-
-function saveUpgrades() {
-  localStorage.setItem("cart_upgrades", JSON.stringify(selectedUpgrades));
-}
-
 function render() {
-  const baseProduct = getBaseProduct();
+  document.getElementById("product").innerText =
+    `${baseProduct} — $${PRODUCTS[baseProduct]}`;
 
-  document.getElementById("cartProductName").innerText = baseProduct.name;
-  document.getElementById("cartProductDesc").innerText = "Primary documentation system selected.";
-  document.getElementById("cartProductPrice").innerText = formatPrice(baseProduct.price);
+  document.getElementById("total").innerText =
+    `Total: $${calcTotal()}`;
 
-  const summaryList = document.getElementById("summaryList");
-  const items = getDisplaySummaryItems();
-  summaryList.innerHTML = items
-    .map(item => `<div class="summary-row"><span>${item.label}</span><span>${formatPrice(item.price)}</span></div>`)
-    .join("");
-
-  document.getElementById("selectedCount").innerText = selectedUpgrades.length;
-  document.getElementById("totalPrice").innerText = formatPrice(calculateTotal());
-
-  document.querySelectorAll(".card").forEach(card => {
-    const upgradeId = card.dataset.upgrade;
-    const button = card.querySelector(".upgrade-btn");
-
-    if (selectedUpgrades.includes(upgradeId)) {
-      card.classList.add("selected");
-      if (button) button.innerText = "Added ✓";
-    } else {
-      card.classList.remove("selected");
-      if (button) button.innerText = "Add Upgrade →";
-    }
+  document.querySelectorAll(".upgrade").forEach(el => {
+    const id = el.dataset.id;
+    el.classList.toggle("selected", selected.includes(id));
   });
-
-  const bundleBtn = document.getElementById("bundleBtn");
-  if (bundleBtn) {
-    bundleBtn.innerText = hasAllThreeUpgrades() ? "Bundle Active ✓" : "Upgrade to Full Suite →";
-  }
 }
 
-function toggleUpgrade(upgradeId) {
-  const index = selectedUpgrades.indexOf(upgradeId);
+document.querySelectorAll(".upgrade").forEach(el => {
+  el.onclick = () => {
+    const id = el.dataset.id;
 
-  if (index > -1) {
-    selectedUpgrades.splice(index, 1);
-  } else {
-    selectedUpgrades.push(upgradeId);
-  }
+    if (selected.includes(id)) {
+      selected = selected.filter(x => x !== id);
+    } else {
+      selected.push(id);
+    }
 
-  saveUpgrades();
-  render();
-}
+    localStorage.setItem("cart_upgrades", JSON.stringify(selected));
+    render();
+  };
+});
 
-async function startCheckout(payload, buttonEl) {
-  const originalText = buttonEl.innerText;
-  buttonEl.innerText = "Processing...";
-  buttonEl.disabled = true;
+document.getElementById("bundleBtn").onclick = () => {
+  startCheckout({
+    baseProduct: { slug: baseProduct },
+    addOns: [],
+    bundleActive: true
+  });
+};
 
+document.getElementById("checkoutBtn").onclick = () => {
+  startCheckout({
+    baseProduct: { slug: baseProduct },
+    addOns: selected.map(s => ({ slug: s })),
+    bundleActive: UPGRADES.every(u => selected.includes(u))
+  });
+};
+
+document.getElementById("continueBtn").onclick = () => {
+  startCheckout({
+    baseProduct: { slug: baseProduct },
+    addOns: [],
+    bundleActive: false
+  });
+};
+
+async function startCheckout(payload) {
   try {
-    const response = await fetch(API_URL, {
+    const res = await fetch(API_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -523,67 +214,24 @@ async function startCheckout(payload, buttonEl) {
       body: JSON.stringify(payload)
     });
 
-    const data = await response.json();
+    const data = await res.json();
 
-    if (data.url) {
-      window.location.href = data.url;
+    if (!data.url) {
+      alert("Checkout failed.");
       return;
     }
 
-    alert(data.error || "Checkout failed.");
+    window.location.href = data.url;
+
   } catch (err) {
-    console.error(err);
     alert("Network error.");
-  } finally {
-    buttonEl.innerText = originalText;
-    buttonEl.disabled = false;
+    console.error(err);
   }
 }
 
-document.querySelectorAll(".upgrade-btn").forEach(btn => {
-  const card = btn.closest(".card");
-  const upgradeId = card.dataset.upgrade;
-
-  btn.addEventListener("click", (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    toggleUpgrade(upgradeId);
-  });
-});
-
-document.querySelectorAll(".card").forEach(card => {
-  const upgradeId = card.dataset.upgrade;
-
-  card.addEventListener("click", () => {
-    toggleUpgrade(upgradeId);
-  });
-});
-
-document.getElementById("checkoutBtn").onclick = () => {
-  startCheckout({
-    baseProduct: { slug: baseProductId },
-    addOns: hasAllThreeUpgrades() ? [] : selectedUpgrades.map(slug => ({ slug })),
-    bundleActive: hasAllThreeUpgrades()
-  }, document.getElementById("checkoutBtn"));
-};
-
-document.getElementById("continueBtn").onclick = () => {
-  startCheckout({
-    baseProduct: { slug: baseProductId },
-    addOns: [],
-    bundleActive: false
-  }, document.getElementById("continueBtn"));
-};
-
-document.getElementById("bundleBtn").onclick = () => {
-  startCheckout({
-    baseProduct: { slug: baseProductId },
-    addOns: [],
-    bundleActive: true
-  }, document.getElementById("bundleBtn"));
-};
-
 render();
+
 </script>
+
 </body>
 </html>
