@@ -23,7 +23,9 @@ app.use(cors({
 app.use(express.json({ limit: "1mb" }));
 app.use(express.urlencoded({ extended: true }));
 
-// Serve all static files from /public
+// -------------------------
+// Static files
+// -------------------------
 app.use(express.static(path.join(__dirname, "public")));
 
 // -------------------------
@@ -60,6 +62,7 @@ app.get("/thank-you", (req, res) => {
 // -------------------------
 // API route
 // -------------------------
+app.options("/api/create-checkout-session", cors());
 app.post("/api/create-checkout-session", createCheckoutSessionHandler);
 
 // -------------------------
@@ -74,7 +77,16 @@ app.get("/health", (req, res) => {
 });
 
 // -------------------------
-// 404 fallback
+// API 404 fallback (JSON, not HTML)
+// -------------------------
+app.use("/api", (req, res) => {
+  return res.status(404).json({
+    error: `API route not found: ${req.method} ${req.originalUrl}`
+  });
+});
+
+// -------------------------
+// Page 404 fallback
 // -------------------------
 app.use((req, res) => {
   return res.status(404).sendFile(path.join(__dirname, "public", "employee-notice-documentation.html"));
